@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
@@ -54,26 +52,30 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 
 		public void UpdateAddresses(long stateProvinceId, List<Address> addresses)
 		{
-			//var addressDatabase = context.SearchForChildDocumentsByParentId<Address>(stateProvinceId, typeof(StateProvince));
 			foreach (var item in addresses)
 			{
-				// TODO delete if exists (Not yet supported)
 				_context.AddUpdateDocument(item, item.AddressID, item.StateProvinceID);
 			}
 
 			_context.SaveChanges();
 		}
 
-		public void DeleteAddress(long deleteId)
+		[HttpPost]
+		public void DeleteAddress(long addressId)
 		{
-			_context.DeleteDocument<Address>(deleteId);
+			_context.DeleteDocument<Address>(addressId);
 			_context.SaveChanges();
 		}
 
 		public List<SelectListItem> GetAllStateProvinces()
 		{
 			var result = from element in _context.Search<StateProvince>("")
-						 select new SelectListItem { Text = string.Format("StateProvince: {0}, CountryRegionCode {1}", element.StateProvinceCode, element.CountryRegionCode), Value = element.StateProvinceID.ToString() };
+						 select new SelectListItem
+						 {
+							 Text = string.Format("StateProvince: {0}, CountryRegionCode {1}", 
+							 element.StateProvinceCode, element.CountryRegionCode), 
+							 Value = element.StateProvinceID.ToString()
+						 };
 
 			return result.ToList();
 		}

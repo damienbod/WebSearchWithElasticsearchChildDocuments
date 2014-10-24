@@ -10,7 +10,7 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 
 		void AddUpdateDocument(Address address);
 		void UpdateAddresses(long stateProvinceId, List<Address> addresses);
-		void DeleteAddress(long updateId);
+		void DeleteAddress(long addressId);
 		List<SelectListItem> GetAllStateProvinces();
 		List<Address> GetAllAddressesForStateProvince(string stateprovinceid);
 	}
