@@ -26,7 +26,7 @@ namespace WebSearchWithElasticsearchChildDocuments.Controllers
 			return Json(_searchProvider.QueryString<StateProvince>(term), "AddressListForStateProvince", JsonRequestBehavior.AllowGet);
 		}
 
-		[Route("Search")]
+		[Route("GetAddressForStateProvince")]
 		public JsonResult GetAddressForStateProvince(string stateprovinceid)
 		{
 			try
@@ -40,6 +40,21 @@ namespace WebSearchWithElasticsearchChildDocuments.Controllers
 			}
 		}
 
+		[Route("CreateAddressForStateProvince")]
+		public JsonResult CreateAddressForStateProvince(Address address)
+		{
+			try
+			{
+				_searchProvider.AddUpdateDocument(address);
+				return Json(new { Result = "OK", Records = address });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Result = "ERROR", Message = ex.Message });
+			}
+		}
+
+		
 
 		//[HttpPost]
 		//[Route("Index")]
