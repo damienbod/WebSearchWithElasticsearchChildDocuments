@@ -77,5 +77,10 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 
 			return result.ToList();
 		}
+
+		public List<Address> GetAllAddressesForStateProvince(string stateprovinceid)
+		{
+			return _context.SearchForChildDocumentsByParentId<Address>(stateprovinceid, typeof(StateProvince)).ToList();
+		}
 	}
 }

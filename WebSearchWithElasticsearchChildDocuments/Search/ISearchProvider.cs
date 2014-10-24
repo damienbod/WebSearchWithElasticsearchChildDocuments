@@ -12,5 +12,6 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 		void UpdateAddresses(long stateProvinceId, List<Address> addresses);
 		void DeleteAddress(long updateId);
 		List<SelectListItem> GetAllStateProvinces();
+		List<Address> GetAllAddressesForStateProvince(string stateprovinceid);
 	}
 }

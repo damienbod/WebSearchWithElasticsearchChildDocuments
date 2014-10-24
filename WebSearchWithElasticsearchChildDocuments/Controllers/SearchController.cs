@@ -26,6 +26,21 @@ namespace WebSearchWithElasticsearchChildDocuments.Controllers
 			return Json(_searchProvider.QueryString<StateProvince>(term), "AddressListForStateProvince", JsonRequestBehavior.AllowGet);
 		}
 
+		[Route("Search")]
+		public JsonResult GetAddressForStateProvince(string stateprovinceid)
+		{
+			try
+			{
+				List<Address> addresses = _searchProvider.GetAllAddressesForStateProvince(stateprovinceid);
+				return Json(new { Result = "OK", Records = addresses });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Result = "ERROR", Message = ex.Message });
+			}
+		}
+
+
 		//[HttpPost]
 		//[Route("Index")]
 		//public ActionResult Index(SkillWithListOfDetails model, string createSkillDetailsList)

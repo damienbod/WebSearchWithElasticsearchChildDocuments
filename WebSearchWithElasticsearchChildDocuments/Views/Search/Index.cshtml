@@ -18,8 +18,13 @@
                 <input id="autocomplete" type="text" style="width:500px" />
             </td>
         </tr>
+        
+        
     </table>
 </fieldset>
+
+<div id="addressResultsForStateProvince" />
+<input name="selectedstateprovinceid" id="selectedstateprovinceid" type="hidden" value="" />
 
 @section scripts
 {
@@ -55,12 +60,76 @@
                     });
                 },
                 select: function(event, ui) {
-
+                    $("#selectedstateprovinceid").val(ui.item.data.StateProvinceID);
+                    $('#addressResultsForStateProvince').jtable('load');
                     console.log(ui.item);
                 }
             });
 
+
+            $('#addressResultsForStateProvince').jtable({
+                title: 'Skill Details',
+                paging: false,
+                pageSize: 10,
+                sorting: true,
+                multiSorting: true,
+                defaultSorting: 'Name asc',
+                actions: {
+                    listAction: 'http://localhost:49907/Search/GetAddressForStateProvince?stateprovinceid=' + $("#selectedstateprovinceid").val(),
+                    //deleteAction: function (postData) {
+                    //    console.log("delete action called for:" + JSON.stringify(postData));
+                    //    return {
+                    //        "Result": "OK"
+                    //    };
+                    //},
+                    //createAction: function (postData) {
+                    //    var data = getQueryParams(postData);
+                    //    return {
+                    //        "Result": "OK",
+                    //        "Record": { "Id": data["Id"], "SkillLevel": data["SkillLevel"], "Details": data["Details"], "Created": data["Created"], "Updated": moment() }
+                    //    }
+                    //},
+                    updateAction: function (postData) {
+                        return {
+                            "Result": "OK",
+                        };
+                    }
+                },
+                fields: {
+                    AddressID: {
+                        key: true,
+                        create: true,
+                        edit: true,
+                        list: true
+                    },
+                    AddressLine1: {
+                        title: 'AddressLine1',
+                        width: '20%'
+                    },
+                    AddressLine2: {
+                        title: 'AddressLine2',
+                        width: '20%'
+                    },
+                    City: {
+                        title: 'City',
+                        width: '15%'
+                    },
+                    StateProvinceID: {
+                        title: 'StateProvinceID',
+                        width: '10%'
+                    },
+                    PostalCode: {
+                        title: 'PostalCode',
+                        width: '10%'
+                    },
+                    ModifiedDate: {
+                        title: 'ModifiedDate',
+                        edit: false,
+                        create: false,
+                        width: '15%'
+                    }
+                }
+            });
         });
     </script>
 }
-
