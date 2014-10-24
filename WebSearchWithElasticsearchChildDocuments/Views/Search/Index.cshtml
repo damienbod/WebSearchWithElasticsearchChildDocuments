@@ -1,0 +1,65 @@
+﻿@model WebSearchWithElasticsearchChildDocuments.Models.SearchModel
+
+
+<fieldset class="form">
+    <legend>SEARCH for a document in the search engine</legend>
+    <table width="500">
+        <tr>
+            <th></th>
+        </tr>
+        <tr>
+            <td>
+                <label for="autocomplete">Search: </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input id="autocomplete" type="text" style="width:500px" />
+            </td>
+        </tr>
+    </table>
+</fieldset>
+
+@section scripts
+{
+    <link href="~/Scripts/jtable/themes/jqueryui/jtable_jqueryui.min.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            var updateResults = [];
+            $("input#autocomplete").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: "http://localhost:49907/Search/search",
+                        dataType: "json",
+                        data: {
+                            term: request.term,
+                        },
+                        success: function (data) {
+                            //console.log(data);
+                            //console.log(JSON.stringify(data));
+                            var itemArray = new Array();
+                            for (i = 0; i < data.length; i++) {
+                                var labelData = data[i].Name + ", " + data[i].StateProvinceCode + ", " + data[i].CountryRegionCode;
+                                itemArray[i] = { label: labelData, value: labelData, data: data[i] }
+                            }
+
+                            console.log(itemArray);
+                            response(itemArray);
+                        },
+                        error: function(data, type) {
+                            console.log(type);
+                        }
+                    });
+                },
+                select: function(event, ui) {
+
+                    console.log(ui.item);
+                }
+            });
+
+        });
+    </script>
+}
+

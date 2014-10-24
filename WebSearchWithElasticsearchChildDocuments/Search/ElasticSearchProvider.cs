@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 using ElasticsearchCRUD;
 
@@ -8,46 +11,71 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 	public class ElasticSearchProvider : ISearchProvider
 	{
 		private const string ConnectionString = "http://localhost:9200/";
-		private readonly IElasticSearchMappingResolver _elasticSearchMappingResolver = new ElasticSearchMappingResolver();
+		private readonly IElasticSearchMappingResolver _elasticSearchMappingResolver;
+		private readonly ElasticSearchContext _context;
 
-		private static readonly Uri Node = new Uri(ConnectionString);
-
-		public IEnumerable<Address> QueryString(string term)
+		public ElasticSearchProvider()
 		{
-			throw new NotImplementedException();
+			_elasticSearchMappingResolver = new ElasticSearchMappingResolver();
+			_elasticSearchMappingResolver.AddElasticSearchMappingForEntityType(typeof(Address), new ElasticSearchMappingAddress());
+		    _context = new ElasticSearchContext(ConnectionString, new ElasticsearchSerializerConfiguration(_elasticSearchMappingResolver,true,true));
+		}
+
+		public IEnumerable<T> QueryString<T>(string term) 
+		{ 
+			return _context.Search<T>(BuildQueryStringSearch(term)).ToList();
+		}
+
+		private string BuildQueryStringSearch(string term)
+		{
+			var names = "";
+			if (term != null)
+			{
+				names = term.Replace("+", " OR *");
+			}
+
+			var buildJson = new StringBuilder();
+			buildJson.AppendLine("{");
+			buildJson.AppendLine(" \"query\": {");
+			buildJson.AppendLine("   \"query_string\": {");
+			buildJson.AppendLine("      \"query\": \"" + names + "*\"");
+			buildJson.AppendLine("     }");
+			buildJson.AppendLine("  }");
+			buildJson.AppendLine("}");
+
+			return buildJson.ToString();
 		}
 
 		public void AddUpdateDocument(Address address)
 		{
-			using (var context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver))
-			{
-				context.AddUpdateDocument(address, address.AddressID, address.StateProvinceID);
-				context.SaveChanges();
-			}
+			_context.AddUpdateDocument(address, address.AddressID, address.StateProvinceID);
+			_context.SaveChanges();
 		}
 
 		public void UpdateAddresses(long stateProvinceId, List<Address> addresses)
 		{
-			using (var context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver))
+			//var addressDatabase = context.SearchForChildDocumentsByParentId<Address>(stateProvinceId, typeof(StateProvince));
+			foreach (var item in addresses)
 			{
-				//var addressDatabase = context.SearchForChildDocumentsByParentId<Address>(stateProvinceId, typeof(StateProvince));
-				foreach (var item in addresses)
-				{
-					// TODO delete if exists (Not yet supported)
-					context.AddUpdateDocument(item, item.AddressID, item.StateProvinceID);
-				}
-				
-				context.SaveChanges();
+				// TODO delete if exists (Not yet supported)
+				_context.AddUpdateDocument(item, item.AddressID, item.StateProvinceID);
 			}
+
+			_context.SaveChanges();
 		}
 
 		public void DeleteAddress(long deleteId)
 		{
-			using (var context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver))
-			{
-				context.DeleteDocument<Address>(deleteId);
-				context.SaveChanges();
-			}
+			_context.DeleteDocument<Address>(deleteId);
+			_context.SaveChanges();
+		}
+
+		public List<SelectListItem> GetAllStateProvinces()
+		{
+			var result = from element in _context.Search<StateProvince>("")
+						 select new SelectListItem { Text = string.Format("StateProvince: {0}, CountryRegionCode {1}", element.StateProvinceCode, element.CountryRegionCode), Value = element.StateProvinceID.ToString() };
+
+			return result.ToList();
 		}
 	}
 }
