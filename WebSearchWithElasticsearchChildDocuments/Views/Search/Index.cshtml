@@ -42,9 +42,7 @@
                         data: {
                             term: request.term,
                         },
-                        success: function (data) {
-                            //console.log(data);
-                            //console.log(JSON.stringify(data));
+                        success: function(data) {
                             var itemArray = new Array();
                             for (i = 0; i < data.length; i++) {
                                 var labelData = data[i].Name + ", " + data[i].StateProvinceCode + ", " + data[i].CountryRegionCode;
@@ -61,21 +59,20 @@
                 },
                 select: function(event, ui) {
                     $("#selectedstateprovinceid").val(ui.item.data.StateProvinceID);
-                    $('#addressResultsForStateProvince').jtable('load');
+                    $('#addressResultsForStateProvince').jtable('load', {selectedstateprovinceid : ui.item.data.StateProvinceID});
                     console.log(ui.item);
                 }
             });
 
 
-            $('#addressResultsForStateProvince').jtable({
-                title: 'Skill Details',
-                paging: false,
-                pageSize: 10,
-                sorting: true,
-                multiSorting: true,
-                defaultSorting: 'Name asc',
-                actions: {
-                    listAction: 'http://localhost:49907/Search/GetAddressForStateProvince?stateprovinceid=' + $("#selectedstateprovinceid").val(),
+                $('#addressResultsForStateProvince').jtable({
+                    title: 'Address list of selected StateProvince',
+                    paging: false,
+                    pageSize: 10,
+                    sorting: true,
+                    multiSorting: true,
+                    defaultSorting: 'Name asc',
+                    actions: {
                     //deleteAction: function (postData) {
                     //    console.log("delete action called for:" + JSON.stringify(postData));
                     //    return {
@@ -88,8 +85,24 @@
                     //        "Result": "OK",
                     //        "Record": { "Id": data["Id"], "SkillLevel": data["SkillLevel"], "Details": data["Details"], "Created": data["Created"], "Updated": moment() }
                     //    }
-                    //},
-                    updateAction: function (postData) {
+                        //},
+                        listAction: function (postData, jtParams) {
+                            return $.Deferred(function ($dfd) {
+                                $.ajax({
+                                    url: 'http://localhost:49907/Search/GetAddressForStateProvince?stateprovinceid=' + $('#selectedstateprovinceid').val(),
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: postData,
+                                    success: function (data) {
+                                        $dfd.resolve(data);
+                                    },
+                                    error: function () {
+                                        $dfd.reject();
+                                    }
+                                });
+                            });
+                        },
+                    updateAction: function(postData) {
                         return {
                             "Result": "OK",
                         };
@@ -108,18 +121,26 @@
                     },
                     AddressLine2: {
                         title: 'AddressLine2',
+                        create: true,
+                        edit: true,
                         width: '20%'
                     },
                     City: {
                         title: 'City',
+                        create: true,
+                        edit: true,
                         width: '15%'
                     },
                     StateProvinceID: {
                         title: 'StateProvinceID',
+                        create: true,
+                        edit: true,
                         width: '10%'
                     },
                     PostalCode: {
                         title: 'PostalCode',
+                        create: true,
+                        edit: true,
                         width: '10%'
                     },
                     ModifiedDate: {
