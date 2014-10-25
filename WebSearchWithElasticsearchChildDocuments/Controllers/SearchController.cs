@@ -27,8 +27,8 @@ namespace WebSearchWithElasticsearchChildDocuments.Controllers
 		{
 			try
 			{
-				List<Address> addresses = _searchProvider.GetAllAddressesForStateProvince(stateprovinceid, jtStartIndex, jtPageSize, jtSorting);
-				return Json(new { Result = "OK", Records = addresses });
+				var data = _searchProvider.GetAllAddressesForStateProvince(stateprovinceid, jtStartIndex, jtPageSize, jtSorting);
+				return Json(new { Result = "OK", Records = data.Items, TotalRecordCount = data.TotalCount });
 			}
 			catch (Exception ex)
 			{

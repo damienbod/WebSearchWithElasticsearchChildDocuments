@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using ElasticsearchCRUD;
+using WebSearchWithElasticsearchChildDocuments.Models;
 
 namespace WebSearchWithElasticsearchChildDocuments.Search
 {
@@ -21,7 +22,7 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 
 		public IEnumerable<T> QueryString<T>(string term) 
 		{ 
-			return _context.Search<T>(BuildQueryStringSearch(term)).ToList();
+			return _context.Search<T>(BuildQueryStringSearch(term)).PayloadResult.ToList();
 		}
 
 		private string BuildQueryStringSearch(string term)
@@ -69,7 +70,7 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 
 		public List<SelectListItem> GetAllStateProvinces()
 		{
-			var result = from element in _context.Search<StateProvince>("")
+			var result = from element in _context.Search<StateProvince>("").PayloadResult
 						 select new SelectListItem
 						 {
 							 Text = string.Format("StateProvince: {0}, CountryRegionCode {1}", 
@@ -80,12 +81,25 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 			return result.ToList();
 		}
 
-		public List<Address> GetAllAddressesForStateProvince(string stateprovinceid, int jtStartIndex, int jtPageSize, string jtSorting)
+		public PagingTableResult<Address> GetAllAddressesForStateProvince(string stateprovinceid, int jtStartIndex, int jtPageSize, string jtSorting)
 		{
-			return _context.Search<Address>(BuildSearchForChildDocumentsWithIdAndParentType(stateprovinceid, "stateprovince", jtStartIndex, jtPageSize, jtSorting)).ToList();
+			var result = new PagingTableResult<Address>();
+			var data = _context.Search<Address>(
+							BuildSearchForChildDocumentsWithIdAndParentType(
+								stateprovinceid, 
+								"stateprovince",
+								jtStartIndex, 
+								jtPageSize, 
+								jtSorting)
+						);
+
+			result.Items = data.PayloadResult.ToList();
+			result.TotalCount = data.TotalHits;
+			return result;
 		}
 
 		// {
+		//  "from": 0, "size": 10,
 		//  "query": {
 		//	"term": { "_parent": "parentdocument#7" }
 		//  }
