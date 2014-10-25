@@ -117,6 +117,22 @@
             <param name="searchJsonParameters">JSON string which matches the Elasticsearch Search API</param>
             <returns>A collection of documents of type T in a Task</returns>
         </member>
+        <member name="M:ElasticsearchCRUD.ElasticSearchContext.Count``1(System.String)">
+            <summary>
+            Count to amount of hits for a index, type and query.
+            </summary>
+            <typeparam name="T">Type to find</typeparam>
+            <param name="jsonContent">json query data, returns all in emtpy</param>
+            <returns>Result amount of document found</returns>
+        </member>
+        <member name="M:ElasticsearchCRUD.ElasticSearchContext.CountAsync``1(System.String)">
+            <summary>
+            Count to amount of hits for a index, type and query.
+            </summary>
+            <typeparam name="T">Type to find</typeparam>
+            <param name="jsonContent">json query data, returns all in emtpy</param>
+            <returns>Result amount of document found in a result details task</returns>
+        </member>
         <member name="M:ElasticsearchCRUD.ElasticSearchContext.SearchByIdAsync``1(System.Object)">
             <summary>
             async Uses Elasticsearch search API to get the document per id
@@ -153,11 +169,50 @@
             This bool needs to be set to true if you want to delete an index. Per default this is false.
             </summary>
         </member>
+        <member name="T:ElasticsearchCRUD.ElasticSearchMappingResolver">
+            <summary>
+            This class is used to add all register all the type definitions and then resolver them when requesting or handling response data from Elasticsearch.
+            If no mapping is defined, the default mapping is used.
+            </summary>
+        </member>
+        <member name="M:ElasticsearchCRUD.ElasticSearchMappingResolver.AddElasticSearchMappingForEntityType(System.Type,ElasticsearchCRUD.ElasticSearchMapping)">
+            <summary>
+            You can add custom Type handlers here for specific mapping.
+            Only one mapping can be defined pro type.
+            </summary>
+            <param name="type">Type of class</param>
+            <param name="mapping">mapping definition.</param>
+        </member>
         <member name="T:ElasticsearchCRUD.ElasticSearchMapping">
             <summary>
             Default mapping for your Entity. You can implement this clas to implement your specific mapping if required
             Everything is lowercase and the index is pluralized
             </summary>
+        </member>
+        <member name="M:ElasticsearchCRUD.ElasticSearchMapping.MapEntityValues(ElasticsearchCRUD.EntityContextInfo,ElasticsearchCRUD.ElasticsearchCrudJsonWriter,System.Boolean)">
+            <summary>
+            Ovveride this if your default mapping needs to be changed.
+            default type is lowercase for properties, indes pluralized and type to lower
+            </summary>
+            <param name="entityInfo">Information about the entity</param>
+            <param name="elasticsearchCrudJsonWriter">Serializer with added tracing</param>
+            <param name="beginMappingTree">begin new mapping tree</param>
+        </member>
+        <member name="M:ElasticsearchCRUD.ElasticSearchMapping.GetDocumentType(System.Type)">
+            <summary>
+            Override this if you require a special type definitoin for your document type.
+            </summary>
+            <param name="type"></param>
+            <returns>The type used in Elasticsearch for this type</returns>
+        </member>
+        <member name="M:ElasticsearchCRUD.ElasticSearchMapping.GetIndexForType(System.Type)">
+            <summary>
+            Overide this if you need to define the index for your document. 
+            Required if your using a child document type.
+            Default: pluralize the default type
+            </summary>
+            <param name="type">Type of class used</param>
+            <returns>The index used in Elasticsearch for this type</returns>
         </member>
     </members>
 </doc>
