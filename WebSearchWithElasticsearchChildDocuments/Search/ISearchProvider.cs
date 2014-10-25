@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Web.Mvc;
 
 namespace WebSearchWithElasticsearchChildDocuments.Search
@@ -12,6 +11,6 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 		void UpdateAddresses(long stateProvinceId, List<Address> addresses);
 		void DeleteAddress(long addressId);
 		List<SelectListItem> GetAllStateProvinces();
-		List<Address> GetAllAddressesForStateProvince(string stateprovinceid);
+		List<Address> GetAllAddressesForStateProvince(string stateprovinceid, int jtStartIndex, int jtPageSize, string jtSorting);
 	}
 }

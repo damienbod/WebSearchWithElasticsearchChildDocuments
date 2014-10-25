@@ -21,13 +21,13 @@ namespace WebSearchWithElasticsearchChildDocuments.Controllers
 		{
 			return Json(_searchProvider.QueryString<StateProvince>(term), "AddressListForStateProvince", JsonRequestBehavior.AllowGet);
 		}
-
+    
 		[Route("GetAddressForStateProvince")]
-		public JsonResult GetAddressForStateProvince(string stateprovinceid)
+		public JsonResult GetAddressForStateProvince(string stateprovinceid, int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
 		{
 			try
 			{
-				List<Address> addresses = _searchProvider.GetAllAddressesForStateProvince(stateprovinceid);
+				List<Address> addresses = _searchProvider.GetAllAddressesForStateProvince(stateprovinceid, jtStartIndex, jtPageSize, jtSorting);
 				return Json(new { Result = "OK", Records = addresses });
 			}
 			catch (Exception ex)

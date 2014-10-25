@@ -80,9 +80,27 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 			return result.ToList();
 		}
 
-		public List<Address> GetAllAddressesForStateProvince(string stateprovinceid)
+		public List<Address> GetAllAddressesForStateProvince(string stateprovinceid, int jtStartIndex, int jtPageSize, string jtSorting)
 		{
-			return _context.SearchForChildDocumentsByParentId<Address>(stateprovinceid, typeof(StateProvince)).ToList();
+			return _context.Search<Address>(BuildSearchForChildDocumentsWithIdAndParentType(stateprovinceid, "stateprovince", jtStartIndex, jtPageSize, jtSorting)).ToList();
+		}
+
+		// {
+		//  "query": {
+		//	"term": { "_parent": "parentdocument#7" }
+		//  }
+		// }
+		private string BuildSearchForChildDocumentsWithIdAndParentType(object parentId, string parentType, int jtStartIndex, int jtPageSize, string jtSorting)
+		{
+			var buildJson = new StringBuilder();
+			buildJson.AppendLine("{");
+			buildJson.AppendLine("\"from\" : " + jtStartIndex + ", \"size\" : " + jtPageSize + ",");
+			buildJson.AppendLine("\"query\": {");
+			buildJson.AppendLine("\"term\": {\"_parent\": \"" + parentType + "#" + parentId + "\"}");
+			buildJson.AppendLine("}");
+			buildJson.AppendLine("}");
+
+			return buildJson.ToString();
 		}
 	}
 }

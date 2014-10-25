@@ -67,11 +67,11 @@
 
                 $('#addressResultsForStateProvince').jtable({
                     title: 'Address list of selected StateProvince',
-                    paging: false,
+                    paging: true,
                     pageSize: 10,
                     sorting: true,
                     multiSorting: true,
-                    defaultSorting: 'Name asc',
+                    defaultSorting: 'City asc',
                     actions: {
                         deleteAction: function (postData) {
                             return $.Deferred(function ($dfd) {
@@ -91,11 +91,13 @@
                         },
                         listAction: function (postData, jtParams) {
                             return $.Deferred(function ($dfd) {
+
+                                console.log(jtParams);
                                 $.ajax({
                                     url: 'http://localhost:49907/Search/GetAddressForStateProvince?stateprovinceid=' + $('#selectedstateprovinceid').val(),
                                     type: 'POST',
                                     dataType: 'json',
-                                    data: postData,
+                                    data: jtParams,
                                     success: function (data) {
                                         $dfd.resolve(data);
                                     },
