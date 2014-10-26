@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
@@ -7,7 +8,7 @@ using WebSearchWithElasticsearchChildDocuments.Models;
 
 namespace WebSearchWithElasticsearchChildDocuments.Search
 {
-	public class ElasticSearchProvider : ISearchProvider
+	public class ElasticSearchProvider : ISearchProvider, IDisposable
 	{
 		private const string ConnectionString = "http://localhost:9200/";
 		private readonly IElasticSearchMappingResolver _elasticSearchMappingResolver;
@@ -115,6 +116,16 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 			buildJson.AppendLine("}");
 
 			return buildJson.ToString();
+		}
+
+		private bool isDisposed;
+		public void Dispose()
+		{
+			if (!isDisposed)
+			{
+				isDisposed = true;
+				_context.Dispose();
+			}
 		}
 	}
 }
