@@ -11,14 +11,14 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 	public class ElasticSearchProvider : ISearchProvider, IDisposable
 	{
 		private const string ConnectionString = "http://localhost:9200/";
-		private readonly IElasticSearchMappingResolver _elasticSearchMappingResolver;
-		private readonly ElasticSearchContext _context;
+		private readonly IElasticsearchMappingResolver _elasticsearchMappingResolver;
+		private readonly ElasticsearchContext _context;
 
 		public ElasticSearchProvider()
 		{
-			_elasticSearchMappingResolver = new ElasticSearchMappingResolver();
-			_elasticSearchMappingResolver.AddElasticSearchMappingForEntityType(typeof(Address), new ElasticSearchMappingAddress());
-		    _context = new ElasticSearchContext(ConnectionString, new ElasticsearchSerializerConfiguration(_elasticSearchMappingResolver,true,true));
+			_elasticsearchMappingResolver = new ElasticsearchMappingResolver();
+			_elasticsearchMappingResolver.AddElasticSearchMappingForEntityType(typeof(Address), new ElasticsearchMappingAddress());
+		    _context = new ElasticsearchContext(ConnectionString, new ElasticsearchSerializerConfiguration(_elasticsearchMappingResolver,true,true));
 		}
 
 		public IEnumerable<T> QueryString<T>(string term) 
@@ -48,6 +48,7 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 
 		public void AddUpdateDocument(Address address)
 		{
+			// if the parent has changed, the child needs to be deleted and created again. This in not required in this example
 			_context.AddUpdateDocument(address, address.AddressID, address.StateProvinceID);
 			_context.SaveChanges();
 		}
@@ -56,13 +57,13 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 		{
 			foreach (var item in addresses)
 			{
+				// if the parent has changed, the child needs to be deleted and created again. This in not required in this example
 				_context.AddUpdateDocument(item, item.AddressID, item.StateProvinceID);
 			}
 
 			_context.SaveChanges();
 		}
 
-		[HttpPost]
 		public void DeleteAddress(long addressId)
 		{
 			_context.DeleteDocument<Address>(addressId);
