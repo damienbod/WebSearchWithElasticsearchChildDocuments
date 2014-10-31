@@ -41,6 +41,8 @@ namespace WebSearchWithElasticsearchChildDocuments.Controllers
 		{
 			try
 			{
+				address.ModifiedDate = DateTime.UtcNow;
+				address.rowguid = Guid.NewGuid();
 				_searchProvider.AddUpdateDocument(address);
 				return Json(new { Result = "OK", Record = address });
 			}

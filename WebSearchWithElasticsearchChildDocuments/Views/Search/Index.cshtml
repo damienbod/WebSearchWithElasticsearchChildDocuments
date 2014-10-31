@@ -73,73 +73,26 @@
                     multiSorting: true,
                     defaultSorting: 'City asc',
                     actions: {
-                        deleteAction: function (postData) {
-                            return $.Deferred(function ($dfd) {
-                                $.ajax({
-                                    url: 'http://localhost:49907/Search/DeleteAddress',
-                                    type: 'POST',
-                                    dataType: 'json',
-                                    data: postData,
-                                    success: function (data) {
-                                        $dfd.resolve(data);
-                                    },
-                                    error: function () {
-                                        $dfd.reject();
-                                    }
-                                });
-                            });
-                        },
+                        deleteAction: 'http://localhost:49907/Search/DeleteAddress',
                         listAction: function (postData, jtParams) {
-                            return $.Deferred(function ($dfd) {
-
-                                console.log(jtParams);
-                                $.ajax({
+                            var  resultData = $.ajax({
                                     url: 'http://localhost:49907/Search/GetAddressForStateProvince?stateprovinceid=' + $('#selectedstateprovinceid').val(),
                                     type: 'POST',
                                     dataType: 'json',
                                     data: jtParams,
                                     success: function (data) {
-                                        $dfd.resolve(data);
+                                        return data;
                                     },
                                     error: function () {
-                                        $dfd.reject();
+                                        
                                     }
-                                });
                             });
+
+                            return resultData;
                         },
-                        createAction: function (postData) {
-                            return $.Deferred(function ($dfd) {
-                                $.ajax({
-                                    url: 'http://localhost:49907/Search/CreateAddressForStateProvince?stateprovinceid=' + $('#selectedstateprovinceid').val(),
-                                    type: 'POST',
-                                    dataType: 'json',
-                                    data: postData,
-                                    success: function (data) {
-                                        $dfd.resolve(data);
-                                    },
-                                    error: function () {
-                                        $dfd.reject();
-                                    }
-                                });
-                            });
-                        },
-                    updateAction: function(postData) {
-                        return $.Deferred(function ($dfd) {
-                            $.ajax({
-                                url: 'http://localhost:49907/Search/CreateAddressForStateProvince?stateprovinceid=' + $('#selectedstateprovinceid').val(),
-                                type: 'POST',
-                                dataType: 'json',
-                                data: postData,
-                                success: function (data) {
-                                    $dfd.resolve(data);
-                                },
-                                error: function () {
-                                    $dfd.reject();
-                                }
-                            });
-                        });
-                    }
-                },
+                        createAction: 'http://localhost:49907/Search/CreateAddressForStateProvince',
+                        updateAction: 'http://localhost:49907/Search/CreateAddressForStateProvince'
+                    },
                 fields: {
                     AddressID: {
                         key: true,
@@ -165,8 +118,8 @@
                     },
                     StateProvinceID: {
                         title: 'StateProvinceID',
-                        create: false,
-                        edit: false,
+                        create: true,
+                        edit: true,
                         width: '10%'
                     },
                     PostalCode: {
