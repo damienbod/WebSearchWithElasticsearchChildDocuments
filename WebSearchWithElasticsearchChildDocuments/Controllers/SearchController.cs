@@ -42,7 +42,7 @@ namespace WebSearchWithElasticsearchChildDocuments.Controllers
 			try
 			{
 				_searchProvider.AddUpdateDocument(address);
-				return Json(new { Result = "OK", Records = address });
+				return Json(new { Result = "OK", Record = address });
 			}
 			catch (Exception ex)
 			{
