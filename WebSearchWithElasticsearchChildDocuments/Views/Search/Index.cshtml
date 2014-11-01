@@ -18,10 +18,10 @@
                 <input id="autocomplete" type="text" style="width:500px" />
             </td>
         </tr>
-        
-        
     </table>
 </fieldset>
+
+<input type="button" onclick="RefreshjTableForm()" value="Refresh Table" style="width:500px" />
 
 <div id="addressResultsForStateProvince" />
 <input name="selectedstateprovinceid" id="selectedstateprovinceid" type="hidden" value="" />
@@ -31,6 +31,10 @@
     <link href="http://localhost:49907/Content/themes/flat/jquery-ui-1.10.3.min.css" rel="stylesheet" />
     <link href="~/Scripts/jtable/themes/jqueryui/jtable_jqueryui.min.css" rel="stylesheet" />
     <script type="text/javascript">
+
+        function RefreshjTableForm() {
+            $('#addressResultsForStateProvince').jtable('load', { selectedstateprovinceid: $('#selectedstateprovinceid').val() });
+        }
 
         $(document).ready(function() {
 
