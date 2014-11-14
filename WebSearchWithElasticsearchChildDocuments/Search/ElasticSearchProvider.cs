@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using ElasticsearchCRUD;
+using ElasticsearchCRUD.ContextAddDeleteUpdate;
 using WebSearchWithElasticsearchChildDocuments.Models;
 
 namespace WebSearchWithElasticsearchChildDocuments.Search
@@ -49,7 +50,7 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 		public void AddUpdateDocument(Address address)
 		{
 			// if the parent has changed, the child needs to be deleted and created again. This in not required in this example
-			_context.AddUpdateDocument(address, address.AddressID, address.StateProvinceID);
+			_context.AddUpdateDocument(address, address.AddressID, new RoutingDefinition { ParentId = address.StateProvinceID });
 			_context.SaveChanges();
 		}
 
@@ -58,7 +59,7 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 			foreach (var item in addresses)
 			{
 				// if the parent has changed, the child needs to be deleted and created again. This in not required in this example
-				_context.AddUpdateDocument(item, item.AddressID, item.StateProvinceID);
+				_context.AddUpdateDocument(item, item.AddressID, new RoutingDefinition{ParentId = item.StateProvinceID});
 			}
 
 			_context.SaveChanges();
