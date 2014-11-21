@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using ElasticsearchCRUD.ContextAddDeleteUpdate.CoreTypeAttributes;
 
 namespace WebSearchWithElasticsearchChildDocuments.Search
 {
@@ -19,6 +20,7 @@ namespace WebSearchWithElasticsearchChildDocuments.Search
 		[StringLength(3)]
 		public string CountryRegionCode { get; set; }
 
+		[ElasticsearchBoolean]
 		public bool IsOnlyStateProvinceFlag { get; set; }
 
 		[Required]
