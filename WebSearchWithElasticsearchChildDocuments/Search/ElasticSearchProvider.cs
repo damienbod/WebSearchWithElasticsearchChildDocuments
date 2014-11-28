@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using ElasticsearchCRUD;
-using ElasticsearchCRUD.ContextAddDeleteUpdate;
+using ElasticsearchCRUD.ContextAddDeleteUpdate.IndexModel;
 using WebSearchWithElasticsearchChildDocuments.Models;
 
 namespace WebSearchWithElasticsearchChildDocuments.Search
