@@ -36,4 +36,14 @@ https://www.nuget.org/packages/ElasticsearchCRUD/
 
 <a href="http://damienbod.wordpress.com/2014/11/23/elasticsearch-parent-child-grandchild-documents-and-routing/">Part 9: Elasticsearch Parent, Child, Grandchild Documents and Routing</a>
 
-<a href="http://damienbod.wordpress.com/2014/11/24/elasticsearch-type-mappings-with-elasticsearchcrud/">Part 10 Elasticsearch Type mappings with ElasticsearchCRUD</a>
+<a href="http://damienbod.wordpress.com/2014/11/24/elasticsearch-type-mappings-with-elasticsearchcrud/">Part 10: Elasticsearch Type mappings with ElasticsearchCRUD</a>
+
+<a href="https://damienbod.wordpress.com/2014/12/12/elasticsearch-synonym-analyzer-using-elasticsearchcrud/">Part 11: Elasticsearch Synonym Analyzer using ElasticsearchCRUD</a>
+
+<a href="https://damienbod.wordpress.com/2014/12/20/using-elasticsearch-german-analyzer/">Part 12: Using Elasticsearch German Analyzer</a>
+
+<a href="https://damienbod.wordpress.com/2015/01/07/mvc-google-maps-search-using-elasticsearch/">Part 13: MVC google maps search using Elasticsearch</a>
+
+<a href="https://damienbod.wordpress.com/2015/01/24/search-queries-and-filters-with-elasticsearchcrud/">Part 14: Search Queries and Filters with ElasticsearchCRUD</a>
+
+<a href="https://damienbod.wordpress.com/2015/01/28/elasticsearch-bulk-insert/">Part 15: Elasticsearch Bulk Insert</a>
