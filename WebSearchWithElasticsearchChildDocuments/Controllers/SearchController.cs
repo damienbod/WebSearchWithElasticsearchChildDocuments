@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
-using WebSearchWithElasticsearchChildDocuments.Search;
+using WebSearchWithElasticsearchChildDocuments.SearchEngine;
 
 namespace WebSearchWithElasticsearchChildDocuments.Controllers
 {
@@ -54,9 +53,9 @@ namespace WebSearchWithElasticsearchChildDocuments.Controllers
 
 		[HttpPost]
 		[Route("DeleteAddress")]
-		public ActionResult DeleteAddress(long addressId)
+		public ActionResult DeleteAddress(long addressId, long selectedstateprovinceid)
 		{
-			_searchProvider.DeleteAddress(addressId);
+			_searchProvider.DeleteAddress(addressId, selectedstateprovinceid);
 			return Json(new { Result = "OK"});
 		}
 	}

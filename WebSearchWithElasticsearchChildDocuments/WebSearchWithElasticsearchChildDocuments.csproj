@@ -43,14 +43,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="ElasticsearchCRUD, Version=1.0.21.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ElasticsearchCRUD, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ElasticsearchCRUD.1.0.21.1\lib\net45\ElasticsearchCRUD.dll</HintPath>
+      <HintPath>..\packages\ElasticsearchCRUD.1.0.26\lib\net45\ElasticsearchCRUD.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -162,12 +162,12 @@
     <Compile Include="Models\PagingTableResult.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Search\Address.cs" />
-    <Compile Include="Search\CountryRegion.cs" />
-    <Compile Include="Search\ElasticSearchMappingAddress.cs" />
-    <Compile Include="Search\ElasticSearchProvider.cs" />
-    <Compile Include="Search\ISearchProvider.cs" />
-    <Compile Include="Search\StateProvince.cs" />
+    <Compile Include="SearchEngine\Address.cs" />
+    <Compile Include="SearchEngine\CountryRegion.cs" />
+    <Compile Include="SearchEngine\ElasticSearchMappingAddress.cs" />
+    <Compile Include="SearchEngine\ElasticSearchProvider.cs" />
+    <Compile Include="SearchEngine\ISearchProvider.cs" />
+    <Compile Include="SearchEngine\StateProvince.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
